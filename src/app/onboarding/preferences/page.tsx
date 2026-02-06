@@ -150,14 +150,17 @@ export default function OnboardingPreferencesPage() {
           <section className="mb-9">
             <h3 className="mb-4 text-[22px] font-black text-text">관심 직무</h3>
             <div className="flex flex-wrap gap-2">
-              {roles.map((role) => (
-                <Chip
-                  key={role.label}
-                  label={role.label}
-                  active={role.value ? selectedRole === role.value : false}
-                  onClick={role.value ? () => setSelectedRole(role.value) : undefined}
-                />
-              ))}
+              {roles.map((role) => {
+                const value = role.value;
+                return (
+                  <Chip
+                    key={role.label}
+                    label={role.label}
+                    active={value ? selectedRole === value : false}
+                    onClick={value ? () => setSelectedRole(value) : undefined}
+                  />
+                );
+              })}
               <button
                 type="button"
                 className="inline-flex items-center gap-1 rounded-full border border-dashed border-line bg-white px-3 py-2 text-[12px] font-semibold text-muted"
