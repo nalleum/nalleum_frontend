@@ -141,7 +141,7 @@ export default function SettingsPage() {
                   <FileText size={18} />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[13px] font-bold text-[#0f1738]">이력서_김지석_2025.pdf</p>
+                  <p className="text-[13px] font-bold text-[#0f1738]">{`이력서_${profile.nickname}.pdf`}</p>
                   <p className="text-[11px] text-[#9aa8c8]">2.4MB • 첨부 완료</p>
                 </div>
                 <button type="button" className="text-[#c3cce0]">
