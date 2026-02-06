@@ -14,7 +14,7 @@ import {
   Sparkles,
   Trash2,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import AppShell from '@/components/AppShell';
 import BottomNav from '@/components/BottomNav';
@@ -36,7 +36,6 @@ export default function SettingsPage() {
   const togglePush = useProfileStore((state) => state.togglePush);
   const setPushTime = useProfileStore((state) => state.setPushTime);
   const insights = useInsightStore((state) => state.insights);
-  const [status, setStatus] = useState('');
 
   const primaryInsight = useMemo(
     () => insights.find((item) => profile.targetCompanies.includes(item.companyName)) ?? insights[0],
@@ -48,7 +47,6 @@ export default function SettingsPage() {
   const handlePushToggle = async () => {
     if (pushEnabled) {
       togglePush(false);
-      setStatus('푸시 알림을 껐습니다.');
       return;
     }
 
@@ -57,18 +55,22 @@ export default function SettingsPage() {
 
     if (permission === 'granted') {
       togglePush(true);
-      setStatus('푸시 알림이 활성화되었습니다.');
     } else {
       togglePush(false);
-      setStatus(permission === 'unsupported' ? '이 브라우저는 알림을 지원하지 않습니다.' : '알림 권한이 필요합니다.');
     }
   };
 
-  const handleSendTestPush = async () => {
+  const handleSaveSettings = async () => {
     if (!primaryInsight) return;
-    if (!pushEnabled) {
-      setStatus('푸시 토글을 먼저 켜주세요.');
-      return;
+    let canSendPush = pushEnabled;
+
+    if (!canSendPush) {
+      const permission = await requestNotificationPermission();
+      if (permission !== 'unsupported') setPushPermission(permission);
+      if (permission === 'granted') {
+        togglePush(true);
+        canSendPush = true;
+      }
     }
 
     let pushBody = `Q.${primaryInsight.secondaryQuestion}`;
@@ -86,12 +88,11 @@ export default function SettingsPage() {
       if (questions[0]) {
         pushBody = `Q.${questions[0]}`;
       }
-      setStatus('10초 후 테스트 푸시를 보냅니다.');
-    } catch {
-      setStatus('API 실패로 기본 질문을 사용합니다. 10초 후 테스트 푸시를 보냅니다.');
-    }
+    } catch {}
 
     window.setTimeout(async () => {
+      if (!canSendPush) return;
+
       const result = await sendMockSystemNotification({
         title: `[이슈] ${primaryInsight.title}`,
         body: pushBody,
@@ -101,10 +102,7 @@ export default function SettingsPage() {
 
       if (result.permission !== 'unsupported') setPushPermission(result.permission);
 
-      if (!result.ok) {
-        setStatus(result.message ?? '테스트 알림 전송 실패');
-        return;
-      }
+      if (!result.ok) return;
 
       addPushHistory({
         title: `[${formatDate} ${primaryInsight.companyName}] 면접 대비 질문`,
@@ -112,9 +110,7 @@ export default function SettingsPage() {
         insightId: primaryInsight.id,
         category: '면접 브리핑',
       });
-
-      setStatus('테스트 알림을 전송했습니다.');
-    }, 10000);
+    }, 5000);
   };
 
   return (
@@ -127,7 +123,7 @@ export default function SettingsPage() {
             </button>
             <h1 className='text-[22px] font-black text-[#0f1738]'>설정 및 서류</h1>
           </div>
-          <button type='button' className='text-[14px] font-bold text-primary'>
+          <button type='button' onClick={handleSaveSettings} className='text-[14px] font-bold text-primary'>
             저장
           </button>
         </header>
@@ -150,7 +146,7 @@ export default function SettingsPage() {
               </div>
               <div>
                 <h2 className='text-[18px] font-bold text-[#0f1738]'>{profile.nickname}님</h2>
-                <p className='text-[14px] font-medium text-[#7f8fb1]'>jisuk.kim@vinsign.com</p>
+                <p className='text-[14px] font-medium text-[#7f8fb1]'>nalleum@gmail.com</p>
               </div>
             </div>
           </section>
@@ -323,14 +319,6 @@ export default function SettingsPage() {
                 선택한 시각에 하루 1회 데일리 브리핑 푸시를 보냅니다.
               </p>
             </div>
-            <button
-              type='button'
-              onClick={handleSendTestPush}
-              className='mt-3 w-full rounded-xl bg-primary py-3 text-[14px] font-bold text-white shadow-[0_10px_18px_rgba(79,45,255,0.2)]'
-            >
-              데모 테스트 푸시 보내기
-            </button>
-            {status ? <p className='mt-2 text-[12px] font-semibold text-primary'>{status}</p> : null}
           </section>
 
           <section className='border-b border-[#edf1fb] bg-white px-5 py-6'>
