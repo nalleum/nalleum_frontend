@@ -27,7 +27,7 @@ export const insightCards: InsightCard[] = [
   {
     id: 'naver-search-ai',
     companyName: '네이버',
-    companyIconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Naver_Logo.svg/512px-Naver_Logo.svg.png',
+    companyIconUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=120&q=80',
     title: '네이버 검색 AI 고도화로 검색 경험의 패러다임 전환',
     summary: '생성형 AI 기반 검색 방식으로 사용자 의도 파악과 답변 생성의 정확도가 획기적으로 개선됐습니다.',
     summaryBullets: [
@@ -41,16 +41,15 @@ export const insightCards: InsightCard[] = [
     secondaryQuestion: '검색 엔진에서 사용자 의도를 파악하고 관련성 높은 답변을 생성하는 구조를 설계하시겠습니까?',
     secondaryAnswerTip: '쿼리 이해, 문서 검색, 랭킹, 답변 생성 파이프라인을 단계별로 설명하세요.',
     relatedIds: ['samsung-hbm', 'toss-zero-trust', 'kakao-mq'],
-    coverImageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f70a504f9?auto=format&fit=crop&w=1200&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1516321318423-f06f70a504f9?auto=format&fit=crop&w=480&q=80',
+    coverImageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=480&q=80',
     badge: 'SEARCH TECH',
     category: 'AI',
   },
   {
     id: 'samsung-hbm',
     companyName: '삼성전자',
-    companyIconUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Samsung_Logo.svg/512px-Samsung_Logo.svg.png',
+    companyIconUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=120&q=80',
     title: '차세대 HBM4 양산 계획 발표, 메모리 시장 주도권 강화',
     summary: '삼성전자가 HBM4 양산 로드맵을 발표하며 AI 반도체 경쟁이 본격화됐습니다.',
     summaryBullets: [
@@ -64,8 +63,8 @@ export const insightCards: InsightCard[] = [
     secondaryQuestion: '대규모 생산 전환 시 공급망 리스크를 어떻게 관리하시겠습니까?',
     secondaryAnswerTip: '다중 벤더 전략, 리드타임 버퍼, 지표 기반 조기 경보 체계를 함께 제시하세요.',
     relatedIds: ['naver-ai-backend', 'kakao-mq'],
-    coverImageUrl: 'https://images.unsplash.com/photo-1570303317463-404579f289f8?auto=format&fit=crop&w=1200&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1570303317463-404579f289f8?auto=format&fit=crop&w=480&q=80',
+    coverImageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=480&q=80',
     badge: 'TRENDING',
     category: 'AI & CHIP',
   },
@@ -86,15 +85,15 @@ export const insightCards: InsightCard[] = [
     secondaryQuestion: '제로 트러스트 환경에서 배포 파이프라인을 어떻게 설계하시겠습니까?',
     secondaryAnswerTip: '서명 검증, 비밀정보 분리, 단계별 승인, 감사 추적까지 포함해 설명하세요.',
     relatedIds: ['naver-ai-backend', 'kakao-mq'],
-    coverImageUrl: 'https://images.unsplash.com/photo-1516534775068-bb6d1b15b522?auto=format&fit=crop&w=1200&q=80',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1516534775068-bb6d1b15b522?auto=format&fit=crop&w=480&q=80',
+    coverImageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=480&q=80',
     badge: 'SECURITY',
     category: 'SECURITY',
   },
   {
     id: 'kakao-mq',
     companyName: '카카오',
-    companyIconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Kakao_logo.svg/512px-Kakao_logo.svg.png',
+    companyIconUrl: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=120&q=80',
     title: '대규모 트래픽 처리를 위한 분산 메시지 큐 설계 전략',
     summary: '메시지 큐 파티셔닝과 재처리 전략이 서비스 안정성의 핵심으로 강조되고 있습니다.',
     summaryBullets: [
@@ -116,8 +115,7 @@ export const insightCards: InsightCard[] = [
   {
     id: 'coupang-career',
     companyName: '쿠팡',
-    companyIconUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Coupang_logo.svg/512px-Coupang_logo.svg.png',
+    companyIconUrl: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=120&q=80',
     title: '2025년 상반기 IT 대기업 기술 면접 빈출 질문 리스트',
     summary: '클라우드/AI/분산시스템 중심 질문이 상반기 기술 면접의 핵심 키워드로 집계됐습니다.',
     summaryBullets: [
