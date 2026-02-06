@@ -87,7 +87,7 @@ export default function SettingsPage() {
       }
 
       addPushHistory({
-        title: `[${primaryInsight.companyName}] 면접 질문`,
+        title: `[${primaryInsight.companyName}] 면접 대비 질문`,
         body: `${primaryInsight.secondaryQuestion}`,
         insightId: primaryInsight.id,
         category: '면접 브리핑',
