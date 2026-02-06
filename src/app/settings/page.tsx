@@ -5,6 +5,7 @@ import {
   Building2,
   Camera,
   ChevronLeft,
+  Clock3,
   EllipsisVertical,
   FilePlus2,
   FileText,
@@ -70,7 +71,7 @@ export default function SettingsPage() {
       return;
     }
 
-    let pushBody = `[이슈] ${primaryInsight.title}\nQ.${primaryInsight.secondaryQuestion}`;
+    let pushBody = `Q.${primaryInsight.secondaryQuestion}`;
     const today = new Date();
     const formatDate = `${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}`;
 
@@ -83,7 +84,7 @@ export default function SettingsPage() {
         certifications: profile.certifications ?? '',
       });
       if (questions[0]) {
-        pushBody = `[이슈] ${primaryInsight.title}\nQ.${questions[0]}`;
+        pushBody = `Q.${questions[0]}`;
       }
       setStatus('10초 후 테스트 푸시를 보냅니다.');
     } catch {
@@ -92,7 +93,7 @@ export default function SettingsPage() {
 
     window.setTimeout(async () => {
       const result = await sendMockSystemNotification({
-        title: `[${formatDate} ${primaryInsight.companyName}] 면접 대비 질문`,
+        title: `[이슈] ${primaryInsight.title}`,
         body: pushBody,
         url: `/detail/${primaryInsight.id}`,
         icon: '/main_icon.png',
@@ -274,27 +275,52 @@ export default function SettingsPage() {
             </div>
 
             <div className='space-y-4 rounded-2xl bg-[#f8faff] p-4'>
-              <div className='flex items-center justify-between'>
-                <span className='text-[14px] font-semibold text-[#5d6f98]'>시작 시간</span>
-                <input
-                  type='time'
-                  value={profile.pushTime}
-                  onChange={(event) => setPushTime(event.target.value)}
-                  className='rounded-xl border border-[#edf1fb] bg-white px-4 py-2 text-[14px] font-bold text-[#0f1738]'
-                />
+              <div className='rounded-xl border border-[#e6ecfb] bg-white p-3'>
+                <div className='mb-2 flex items-center gap-2 text-[12px] font-semibold text-[#6f7fa4]'>
+                  <Clock3 size={14} />
+                  원하는 시각
+                </div>
+                <div className='flex items-center justify-between rounded-xl border border-[#edf1fb] bg-[#fbfcff] px-3 py-2'>
+                  <span className='text-[13px] font-semibold text-[#7a8aaf]'>매일 알림 발송</span>
+                  <input
+                    type='time'
+                    value={profile.pushTime}
+                    onChange={(event) => setPushTime(event.target.value)}
+                    className='rounded-lg border border-[#edf1fb] bg-white px-3 py-1.5 text-[13px] font-bold text-[#0f1738]'
+                  />
+                </div>
               </div>
+
               <div className='flex items-center justify-between'>
-                <span className='text-[14px] font-semibold text-[#5d6f98]'>종료 시간</span>
+                <span className='text-[13px] font-semibold text-[#5d6f98]'>빠른 선택</span>
+                <span className='text-[11px] font-medium text-[#9aa8c8]'>탭하면 시간 변경</span>
+              </div>
+              <div className='grid grid-cols-3 gap-2'>
                 <button
                   type='button'
+                  onClick={() => setPushTime('08:00')}
                   className='rounded-xl border border-[#edf1fb] bg-white px-4 py-2 text-[14px] font-bold text-[#0f1738]'
                 >
-                  오후 10:00
+                  08:00
+                </button>
+                <button
+                  type='button'
+                  onClick={() => setPushTime('12:30')}
+                  className='rounded-xl border border-[#edf1fb] bg-white px-4 py-2 text-[14px] font-bold text-[#0f1738]'
+                >
+                  12:30
+                </button>
+                <button
+                  type='button'
+                  onClick={() => setPushTime('20:00')}
+                  className='rounded-xl border border-[#edf1fb] bg-white px-4 py-2 text-[14px] font-bold text-[#0f1738]'
+                >
+                  20:00
                 </button>
               </div>
               <p className='flex items-start gap-2 text-[12px] font-medium text-[#9aa8c8]'>
                 <Info size={14} className='mt-0.5' />
-                설정한 시간 외에는 긴급 공지사항을 제외한 모든 푸시 알림이 발송되지 않습니다.
+                선택한 시각에 하루 1회 데일리 브리핑 푸시를 보냅니다.
               </p>
             </div>
             <button
