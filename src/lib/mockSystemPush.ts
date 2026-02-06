@@ -33,6 +33,34 @@ async function getServiceWorkerRegistration() {
   }
 }
 
+function isAndroid() {
+  if (typeof navigator === "undefined") return false;
+  return /Android/i.test(navigator.userAgent);
+}
+
+async function waitForActivatedServiceWorker(registration: ServiceWorkerRegistration) {
+  const candidate = registration.installing ?? registration.waiting ?? registration.active;
+  if (!candidate) return;
+  if (candidate.state === "activated") return;
+
+  await new Promise<void>((resolve) => {
+    const done = () => resolve();
+    const timer = window.setTimeout(done, 3000);
+    candidate.addEventListener(
+      "statechange",
+      () => {
+        if (candidate.state === "activated") {
+          window.clearTimeout(timer);
+          done();
+        }
+      },
+      { once: true }
+    );
+  });
+
+  return;
+}
+
 export async function requestNotificationPermission(): Promise<NotificationPermission | "unsupported"> {
   if (typeof window === "undefined" || !("Notification" in window)) return "unsupported";
   if (Notification.permission === "granted") return "granted";
@@ -42,6 +70,10 @@ export async function requestNotificationPermission(): Promise<NotificationPermi
 export async function sendMockSystemNotification(payload: MockPushPayload): Promise<MockPushResult> {
   if (typeof window === "undefined" || !("Notification" in window)) {
     return { ok: false, permission: "unsupported", message: "알림을 지원하지 않는 환경입니다." };
+  }
+
+  if (!window.isSecureContext) {
+    return { ok: false, permission: "unsupported", message: "HTTPS 환경에서만 알림을 보낼 수 있습니다." };
   }
 
   const permission = await requestNotificationPermission();
@@ -59,6 +91,7 @@ export async function sendMockSystemNotification(payload: MockPushPayload): Prom
   const registration = await getServiceWorkerRegistration();
   if (registration) {
     try {
+      await waitForActivatedServiceWorker(registration);
       await registration.showNotification(payload.title, {
         body: payload.body,
         icon,
@@ -87,9 +120,11 @@ export async function sendMockSystemNotification(payload: MockPushPayload): Prom
     return {
       ok: false,
       permission,
-      message: isStandalonePwa()
-        ? "현재 기기에서 알림 표시가 제한되어 있습니다. 브라우저 알림 설정을 확인해 주세요."
-        : "모바일에서는 홈 화면에 설치한 PWA에서 알림이 동작할 수 있습니다.",
+      message: isAndroid()
+        ? "안드로이드 알림 표시가 제한되었습니다. Chrome 알림 권한/사이트 알림 차단 여부를 확인해 주세요."
+        : isStandalonePwa()
+          ? "현재 기기에서 알림 표시가 제한되어 있습니다. 브라우저 알림 설정을 확인해 주세요."
+          : "모바일에서는 홈 화면에 설치한 PWA에서 알림이 동작할 수 있습니다.",
     };
   }
 

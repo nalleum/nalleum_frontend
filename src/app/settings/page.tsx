@@ -159,7 +159,7 @@ export default function SettingsPage() {
               </div>
               <p className="text-[12px] font-medium text-muted">설정 권한: {pushPermission}</p>
               <p className="mt-2 text-[12px] font-medium text-[#9aa8c8]">설정한 시간 외에는 mock 알림만 동작합니다.</p>
-              <p className="mt-1 text-[12px] font-medium text-[#9aa8c8]">모바일은 홈 화면 설치(PWA) 상태에서 시스템 알림 동작이 더 안정적입니다.</p>
+              <p className="mt-1 text-[12px] font-medium text-[#9aa8c8]">안드로이드는 Chrome에서 알림 권한을 허용하면 테스트 알림이 즉시 도착합니다.</p>
             </div>
             <button type="button" onClick={handleSendTestPush} className="mt-3 h-12 w-full rounded-xl bg-primary text-[15px] font-black text-white">
               테스트 푸시 보내기 (mock)
