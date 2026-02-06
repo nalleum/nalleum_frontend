@@ -70,7 +70,7 @@ export default function SettingsPage() {
       return;
     }
 
-    let pushBody = primaryInsight.secondaryQuestion;
+    let pushBody = `[이슈] ${primaryInsight.title}\nQ.${primaryInsight.secondaryQuestion}`;
     const today = new Date();
     const formatDate = `${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}`;
 
