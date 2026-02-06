@@ -11,7 +11,7 @@ export default function Chip({
   onClick?: () => void;
   size?: "sm" | "md";
 }) {
-  const sizeClass = size === "sm" ? "px-3 py-1.5 text-[12px]" : "px-4 py-2 text-[13px]";
+  const sizeClass = size === "sm" ? "px-3 py-1.5 text-[11px]" : "px-4 py-2 text-[11px]";
 
   return (
     <button

@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   title: "낼름",
   description: "맞춤형 면접 준비 PWA",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/main_icon.png",
+    shortcut: "/main_icon.png",
+    apple: "/main_icon.png",
+  },
 };
 
 export const viewport: Viewport = {

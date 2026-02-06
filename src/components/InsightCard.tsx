@@ -26,16 +26,16 @@ export default function InsightCardView({
           />
         </div>
         <div>
-          <p className="text-[12px] font-semibold text-[#6f7fa6]">{item.companyName}</p>
+          <p className="text-[11px] font-semibold text-[#6f7fa6]">{item.companyName}</p>
           <p className="text-[11px] font-semibold text-muted">{item.date}</p>
         </div>
         {item.badge ? (
-          <span className="ml-auto rounded-full bg-primary-soft px-2 py-1 text-[10px] font-bold text-primary">
+          <span className="ml-auto rounded-full bg-primary-soft px-2 py-1 text-[11px] font-bold text-primary">
             {item.badge}
           </span>
         ) : null}
       </div>
-      <h3 className="mt-3 text-[19px] font-extrabold leading-[1.35] text-text">{item.title}</h3>
+      <h3 className="mt-3 text-[14px] font-extrabold leading-[1.35] text-text">{item.title}</h3>
     </button>
   );
 }

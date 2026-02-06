@@ -100,30 +100,30 @@ export default function SettingsPage() {
     <AppShell className="page-enter">
       <div className="space-y-6">
         <header className="flex items-center justify-between">
-          <h1 className="text-[44px] font-black tracking-[-0.03em] text-text">설정</h1>
-          <button className="text-[16px] font-extrabold text-primary">저장</button>
+          <h1 className="text-[38px] font-black tracking-[-0.03em] text-text">설정</h1>
+          <button className="text-[12px] font-extrabold text-primary">저장</button>
         </header>
 
         <section className="rounded-[28px] border border-line bg-card p-4 shadow-[var(--shadow-card)]">
           <div className="flex items-center gap-4">
             <Image
-              src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80"
+              src="/main_icon.png"
               alt="profile"
               width={72}
               height={72}
               className="h-[72px] w-[72px] rounded-2xl object-cover"
             />
             <div>
-              <p className="text-[30px] font-black text-text">{profile.nickname || "회원"}님</p>
-              <p className="text-[18px] font-semibold text-muted">mock.user@nalleum.dev</p>
+              <p className="text-[25px] font-black text-text">{profile.nickname || "회원"}님</p>
+              <p className="text-[14px] font-semibold text-muted">mock.user@nalleum.dev</p>
             </div>
           </div>
         </section>
 
         <section className="space-y-3 rounded-[28px] border border-line bg-card p-4 shadow-[var(--shadow-card)]">
-          <h2 className="text-[30px] font-black text-text">관심 분야 및 기업</h2>
+          <h2 className="text-[25px] font-black text-text">관심 분야 및 기업</h2>
           <div>
-            <p className="text-[14px] font-bold text-muted">관심 직무</p>
+            <p className="text-[11px] font-bold text-muted">관심 직무</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {roles.map((role) => (
                 <Chip key={role} label={role} active={profile.targetRole === role} onClick={() => updateRole(role)} />
@@ -131,7 +131,7 @@ export default function SettingsPage() {
             </div>
           </div>
           <div>
-            <p className="text-[14px] font-bold text-muted">관심 기업</p>
+            <p className="text-[11px] font-bold text-muted">관심 기업</p>
             <div className="mt-2 flex flex-wrap gap-2">
               {companies.map((company) => (
                 <Chip
@@ -147,7 +147,7 @@ export default function SettingsPage() {
 
         <section className="space-y-3 rounded-[28px] border border-line bg-card p-4 shadow-[var(--shadow-card)]">
           <div className="flex items-center justify-between">
-            <h2 className="text-[30px] font-black text-text">푸시 알림 시간 설정</h2>
+            <h2 className="text-[25px] font-black text-text">푸시 알림 시간 설정</h2>
             <button
               type="button"
               onClick={handlePushToggle}
@@ -161,35 +161,35 @@ export default function SettingsPage() {
             </button>
           </div>
           <div className="rounded-2xl bg-[#f9fbff] p-4">
-            <p className="text-[13px] font-bold text-muted">현재 권한: {pushPermission}</p>
-            <label className="mt-3 block text-[14px] font-bold text-muted">발송 시간</label>
+            <p className="text-[11px] font-bold text-muted">현재 권한: {pushPermission}</p>
+            <label className="mt-3 block text-[11px] font-bold text-muted">발송 시간</label>
             <input
               type="time"
               value={profile.pushTime}
               onChange={(event) => setPushTime(event.target.value)}
-              className="mt-2 w-full rounded-2xl border border-line px-4 py-3 text-[22px] font-black text-text"
+              className="mt-2 w-full rounded-2xl border border-line px-4 py-3 text-[17px] font-black text-text"
             />
-            <p className="mt-2 text-[12px] font-semibold text-muted">설정된 시간은 mock 알림 테스트 기준으로만 사용됩니다.</p>
+            <p className="mt-2 text-[11px] font-semibold text-muted">설정된 시간은 mock 알림 테스트 기준으로만 사용됩니다.</p>
           </div>
 
           <button
             type="button"
             onClick={handleSendTestPush}
-            className="w-full rounded-2xl bg-primary py-4 text-[20px] font-black text-white"
+            className="w-full rounded-2xl bg-primary py-4 text-[15px] font-black text-white"
           >
             테스트 푸시 보내기 (mock)
           </button>
-          {status ? <p className="text-[13px] font-bold text-primary">{status}</p> : null}
+          {status ? <p className="text-[11px] font-bold text-primary">{status}</p> : null}
         </section>
 
         <section className="space-y-3 rounded-[28px] border border-line bg-card p-4 shadow-[var(--shadow-card)]">
-          <h2 className="text-[30px] font-black text-text">면접 일정 관리</h2>
+          <h2 className="text-[25px] font-black text-text">면접 일정 관리</h2>
           <div className="space-y-3">
             {mockSchedules.map((schedule) => (
               <article key={schedule.id} className="rounded-2xl border border-line bg-white px-4 py-3">
-                <p className="text-[13px] font-extrabold text-primary">{schedule.dateLabel}</p>
-                <p className="mt-1 text-[20px] font-black text-text">{schedule.companyName} {schedule.title}</p>
-                <p className="mt-1 text-[15px] font-semibold text-muted">{schedule.timeLabel}</p>
+                <p className="text-[11px] font-extrabold text-primary">{schedule.dateLabel}</p>
+                <p className="mt-1 text-[15px] font-black text-text">{schedule.companyName} {schedule.title}</p>
+                <p className="mt-1 text-[11px] font-semibold text-muted">{schedule.timeLabel}</p>
               </article>
             ))}
           </div>
@@ -197,15 +197,15 @@ export default function SettingsPage() {
 
         <section className="space-y-3 rounded-[28px] border border-line bg-card p-4 shadow-[var(--shadow-card)]">
           <div className="flex items-center justify-between">
-            <h2 className="text-[30px] font-black text-text">알림 히스토리</h2>
-            <span className="text-[12px] font-extrabold text-muted">최근 {Math.min(pushHistory.length, 10)}건</span>
+            <h2 className="text-[25px] font-black text-text">알림 히스토리</h2>
+            <span className="text-[11px] font-extrabold text-muted">최근 {Math.min(pushHistory.length, 10)}건</span>
           </div>
           <div className="space-y-3">
             {pushHistory.slice(0, 10).map((history) => (
               <article key={history.id} className="rounded-2xl border border-line bg-white p-3">
                 <p className="text-[11px] font-bold text-muted">{new Date(history.receivedAt).toLocaleString()}</p>
-                <p className="mt-1 text-[18px] font-black text-text">{history.title}</p>
-                <p className="mt-1 text-[14px] font-semibold leading-relaxed text-[#5a6f9d]">{history.body}</p>
+                <p className="mt-1 text-[14px] font-black text-text">{history.title}</p>
+                <p className="mt-1 text-[11px] font-semibold leading-relaxed text-[#5a6f9d]">{history.body}</p>
               </article>
             ))}
           </div>
