@@ -287,7 +287,13 @@ export default function SettingsPage() {
           </section>
 
           <section className="space-y-4 px-5 py-8">
-            <button type="button" className="block text-[14px] font-semibold text-[#9aa8c8]">로그아웃</button>
+            <button
+              type="button"
+              onClick={() => router.push("/onboarding")}
+              className="block text-[14px] font-semibold text-[#9aa8c8]"
+            >
+              로그아웃
+            </button>
             <button type="button" className="block text-[14px] font-semibold text-[#ff6b6b]">회원 탈퇴</button>
           </section>
         </main>
