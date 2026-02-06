@@ -83,7 +83,7 @@ export default function SettingsPage() {
         certifications: profile.certifications ?? '',
       });
       if (questions[0]) {
-        pushBody = questions[0];
+        pushBody = `[이슈] ${primaryInsight.title}\nQ.${questions[0]}`;
       }
       setStatus('10초 후 테스트 푸시를 보냅니다.');
     } catch {
