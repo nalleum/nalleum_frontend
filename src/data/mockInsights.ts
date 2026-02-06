@@ -35,7 +35,7 @@ export const insightCards: InsightCard[] = [
       '자연어 이해(NLU) 및 질의응답(QA) 기술 고도화가 핵심 경쟁 요소입니다.',
       '사용자 만족도 향상과 검색 광고 효율성 제고를 동시에 달성하는 것이 과제입니다.',
     ],
-    originalLink: 'https://www.naver.com',
+    originalLink: 'https://m.segye.com/view/20260206511389',
     date: '2025.05.22',
     roleSpecificContent: roleBase,
     secondaryQuestion: '검색 엔진에서 사용자 의도를 파악하고 관련성 높은 답변을 생성하는 구조를 설계하시겠습니까?',
