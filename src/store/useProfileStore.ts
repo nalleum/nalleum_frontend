@@ -1,29 +1,32 @@
 "use client";
 
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
-import { PushHistoryEntry, PushSource, Role, UserProfile } from "@/types";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { mockPushHistorySeed } from "@/data/mockPushHistorySeed";
+import { PushHistoryEntry, PushSource, Role, UserProfile } from "@/types";
 
 const defaultProfile: UserProfile = {
-  nickname: "",
-  targetCompanies: ["삼성전자", "네이버"],
+  nickname: "김민수",
+  targetCompanies: ["삼성전자", "네이버", "카카오"],
   targetRole: "Backend",
-  interestKeywords: ["AI", "아키텍처"],
+  targetIndustries: ["금융/핀테크"],
+  interestKeywords: ["AI", "클라우드"],
   pushTime: "09:00",
   pushEnabled: true,
   onboardingCompleted: false,
 };
 
-const makeId = () => (globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`);
+const makeId = () => globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
 
 type CompleteOnboardingInput = {
   nickname: string;
   targetCompanies: string[];
   targetRole: Role;
+  targetIndustries: string[];
   interestKeywords: string[];
   pushTime: string;
   pushEnabled: boolean;
+  ddayDate?: string;
 };
 
 type ProfileState = {
@@ -31,15 +34,15 @@ type ProfileState = {
   pushEnabled: boolean;
   pushPermission: NotificationPermission;
   pushHistory: PushHistoryEntry[];
-  setProfile: (profile: UserProfile) => void;
   completeOnboarding: (input: CompleteOnboardingInput) => void;
   updateRole: (role: Role) => void;
   toggleCompany: (company: string) => void;
+  toggleIndustry: (industry: string) => void;
   setPushTime: (time: string) => void;
+  setDdayDate: (date?: string) => void;
   togglePush: (enabled?: boolean) => void;
   setPushPermission: (permission: NotificationPermission) => void;
   addPushHistory: (entry: Omit<PushHistoryEntry, "id" | "receivedAt" | "source"> & { source?: PushSource }) => void;
-  clearHistory: () => void;
 };
 
 export const useProfileStore = create<ProfileState>()(
@@ -49,7 +52,6 @@ export const useProfileStore = create<ProfileState>()(
       pushEnabled: defaultProfile.pushEnabled,
       pushPermission: "default",
       pushHistory: mockPushHistorySeed,
-      setProfile: (profile) => set({ profile, pushEnabled: profile.pushEnabled }),
       completeOnboarding: (input) =>
         set({
           profile: {
@@ -59,64 +61,53 @@ export const useProfileStore = create<ProfileState>()(
           },
           pushEnabled: input.pushEnabled,
         }),
-      updateRole: (role) => {
-        const current = get().profile;
-        set({ profile: { ...current, targetRole: role } });
-      },
+      updateRole: (role) => set({ profile: { ...get().profile, targetRole: role } }),
       toggleCompany: (company) => {
         const current = get().profile;
         const exists = current.targetCompanies.includes(company);
-        const targetCompanies = exists
-          ? current.targetCompanies.filter((c) => c !== company)
-          : [...current.targetCompanies, company];
-        set({ profile: { ...current, targetCompanies } });
+        const next = exists ? current.targetCompanies.filter((c) => c !== company) : [...current.targetCompanies, company];
+        set({ profile: { ...current, targetCompanies: next.slice(0, 5) } });
       },
-      setPushTime: (time) => {
+      toggleIndustry: (industry) => {
         const current = get().profile;
-        set({ profile: { ...current, pushTime: time } });
+        const exists = current.targetIndustries.includes(industry);
+        const next = exists ? current.targetIndustries.filter((i) => i !== industry) : [...current.targetIndustries, industry];
+        set({ profile: { ...current, targetIndustries: next } });
       },
+      setPushTime: (time) => set({ profile: { ...get().profile, pushTime: time } }),
+      setDdayDate: (date) => set({ profile: { ...get().profile, ddayDate: date } }),
       togglePush: (enabled) => {
-        const current = get().profile;
-        const pushEnabled = enabled ?? !get().pushEnabled;
-        set({
-          pushEnabled,
-          profile: { ...current, pushEnabled },
-        });
+        const value = enabled ?? !get().pushEnabled;
+        set({ pushEnabled: value, profile: { ...get().profile, pushEnabled: value } });
       },
       setPushPermission: (permission) => set({ pushPermission: permission }),
       addPushHistory: (entry) => {
-        const newEntry: PushHistoryEntry = {
+        const newItem: PushHistoryEntry = {
           id: makeId(),
           receivedAt: new Date().toISOString(),
           source: entry.source ?? "mock-system",
           ...entry,
         };
-        set({ pushHistory: [newEntry, ...get().pushHistory].slice(0, 50) });
+        set({ pushHistory: [newItem, ...get().pushHistory].slice(0, 50) });
       },
-      clearHistory: () => set({ pushHistory: [] }),
     }),
     {
       name: "nalleum-profile",
       storage: createJSONStorage(() => localStorage),
-      merge: (persistedState, currentState) => {
-        const persisted = (persistedState ?? {}) as Partial<ProfileState>;
-        return {
-          ...currentState,
-          ...persisted,
-          profile: {
-            ...currentState.profile,
-            ...(persisted.profile ?? {}),
-          },
-          pushHistory: persisted.pushHistory ?? currentState.pushHistory,
-          pushPermission: persisted.pushPermission ?? currentState.pushPermission,
-        };
-      },
       partialize: (state) => ({
         profile: state.profile,
         pushEnabled: state.pushEnabled,
         pushPermission: state.pushPermission,
         pushHistory: state.pushHistory,
       }),
+      merge: (persistedState, currentState) => {
+        const persisted = (persistedState ?? {}) as Partial<ProfileState>;
+        return {
+          ...currentState,
+          ...persisted,
+          profile: { ...currentState.profile, ...(persisted.profile ?? {}) },
+        };
+      },
     }
   )
 );

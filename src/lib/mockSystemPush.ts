@@ -12,14 +12,8 @@ export type MockPushResult = {
 };
 
 export async function requestNotificationPermission(): Promise<NotificationPermission | "unsupported"> {
-  if (typeof window === "undefined" || !("Notification" in window)) {
-    return "unsupported";
-  }
-
-  if (Notification.permission === "granted") {
-    return "granted";
-  }
-
+  if (typeof window === "undefined" || !("Notification" in window)) return "unsupported";
+  if (Notification.permission === "granted") return "granted";
   return Notification.requestPermission();
 }
 
@@ -37,8 +31,8 @@ export async function sendMockSystemNotification(payload: MockPushPayload): Prom
     };
   }
 
-  const icon = payload.icon ?? "/icons/icon-192.png";
-  const notificationData = { url: payload.url };
+  const icon = payload.icon ?? "/main_icon.png";
+  const data = { url: payload.url };
 
   if ("serviceWorker" in navigator) {
     try {
@@ -47,20 +41,19 @@ export async function sendMockSystemNotification(payload: MockPushPayload): Prom
         body: payload.body,
         icon,
         badge: icon,
-        data: notificationData,
+        data,
         tag: "nalleum-mock-push",
       });
-
       return { ok: true, permission };
     } catch {
-      // Falls back to Notification API when SW-based notification is unavailable.
+      // fallback below
     }
   }
 
   const notification = new Notification(payload.title, {
     body: payload.body,
     icon,
-    data: notificationData,
+    data,
   });
 
   notification.onclick = () => {

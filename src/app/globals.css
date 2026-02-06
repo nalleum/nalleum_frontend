@@ -6,8 +6,8 @@
   --text: #0e1a3a;
   --muted: #8fa0bf;
   --line: #e7ecfb;
-  --primary: #4f2dff;
-  --primary-soft: #f0ebff;
+  --primary: #5a35ff;
+  --primary-soft: #f2eeff;
   --navy: #0f1738;
 }
 
@@ -35,7 +35,7 @@ body {
 }
 
 body {
-  background: radial-gradient(circle at 15% 8%, #eef2ff 0%, #f6f8ff 44%, #ffffff 100%);
+  background: radial-gradient(circle at 12% 8%, #eef2ff 0%, #f6f8ff 46%, #ffffff 100%);
   color: var(--text);
   font-family: var(--font-noto), ui-sans-serif, system-ui;
 }
@@ -52,13 +52,13 @@ button {
 }
 
 .page-enter {
-  animation: pageEnter 0.5s ease both;
+  animation: pageEnter 0.45s ease both;
 }
 
 @keyframes pageEnter {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;

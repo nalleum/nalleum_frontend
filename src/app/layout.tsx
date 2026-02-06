@@ -5,7 +5,7 @@ import "./globals.css";
 const noto = Noto_Sans_KR({
   variable: "--font-noto",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#4f2dff",
+  themeColor: "#5a35ff",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

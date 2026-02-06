@@ -1,150 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
+import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import AppShell from "@/components/AppShell";
-import Chip from "@/components/Chip";
-import { companies } from "@/data/mockInsights";
-import { useHydratedStore } from "@/hooks/useHydratedStore";
-import { requestNotificationPermission } from "@/lib/mockSystemPush";
-import { useProfileStore } from "@/store/useProfileStore";
-import { Role } from "@/types";
 
-const roleOptions: Role[] = ["Frontend", "Backend", "PM", "Design"];
-
-export default function OnboardingPage() {
+export default function OnboardingIntroPage() {
   const router = useRouter();
-  const hydrated = useHydratedStore();
-  const profile = useProfileStore((state) => state.profile);
-  const completeOnboarding = useProfileStore((state) => state.completeOnboarding);
-  const setPushPermission = useProfileStore((state) => state.setPushPermission);
-
-  const [nickname, setNickname] = useState(profile.nickname);
-  const [selectedCompanies, setSelectedCompanies] = useState<string[]>(profile.targetCompanies);
-  const [selectedRole, setSelectedRole] = useState<Role | null>(
-    profile.onboardingCompleted ? profile.targetRole : null
-  );
-  const [keywords, setKeywords] = useState(profile.interestKeywords.join(", "));
-  const [pushTime, setPushTime] = useState(profile.pushTime || "09:00");
-  const [error, setError] = useState("");
-
-  if (!hydrated) {
-    return <div className="min-h-screen bg-background" />;
-  }
-
-  const toggleCompany = (company: string) => {
-    setSelectedCompanies((prev) =>
-      prev.includes(company) ? prev.filter((item) => item !== company) : [...prev, company]
-    );
-  };
-
-  const handleSubmit = async () => {
-    if (!selectedRole) {
-      setError("직무를 선택해 주세요.");
-      return;
-    }
-
-    const permission = await requestNotificationPermission();
-    if (permission !== "unsupported") {
-      setPushPermission(permission);
-    }
-
-    completeOnboarding({
-      nickname: nickname.trim() || "회원",
-      targetCompanies: selectedCompanies,
-      targetRole: selectedRole,
-      interestKeywords: keywords
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean),
-      pushTime,
-      pushEnabled: permission === "granted",
-    });
-
-    router.replace("/home");
-  };
 
   return (
-    <AppShell className="page-enter bg-[radial-gradient(circle_at_20%_15%,#eef2ff_0%,#f8ebff_45%,#eaf2ff_100%)]">
-      <div className="space-y-8 pt-4">
-        <div className="space-y-2">
-          <p className="text-[11px] font-bold text-muted">맞춤 정보 설정</p>
-          <h1 className="text-[42px] font-black leading-[1.08] tracking-[-0.03em] text-text">
-            회원님에게 꼭 맞는
-            <br />
-            공고와 이슈를 추천할게요.
-          </h1>
-          <p className="text-[15px] font-semibold text-[#6e7fa9]">관심 키워드를 선택하면 맞춤 홈을 구성합니다.</p>
+    <AppShell className="page-enter min-h-screen bg-[radial-gradient(circle_at_15%_10%,#edefff_0%,#f8edff_46%,#e7eeff_100%)]" padded={false}>
+      <div className="relative mx-auto flex min-h-screen w-full max-w-[430px] flex-col overflow-hidden px-8 pb-10 pt-6">
+        <div className="flex justify-end">
+          <button type="button" className="text-[14px] font-semibold text-[#8b99b8]" onClick={() => router.push("/onboarding/preferences")}>건너뛰기</button>
         </div>
 
-        <section className="space-y-5 rounded-[28px] border border-line bg-white p-5 shadow-[var(--shadow-card)]">
-          <div>
-            <p className="text-[11px] font-bold text-muted">닉네임</p>
-            <input
-              value={nickname}
-              onChange={(event) => setNickname(event.target.value)}
-              placeholder="이름 또는 닉네임"
-              className="mt-2 w-full rounded-2xl border border-line px-4 py-3 text-[13px] font-semibold text-text"
-            />
+        <div className="mt-auto space-y-7 pb-6">
+          <div className="h-16 w-16 overflow-hidden rounded-[20px] bg-white p-1 shadow-[0_16px_32px_rgba(64,53,165,0.18)]">
+            <Image src="/main_icon.png" alt="main icon" width={64} height={64} className="h-full w-full rounded-[16px] object-cover" />
           </div>
 
-          <div>
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] font-bold text-muted">관심 기업</p>
-              <span className="text-[11px] font-extrabold text-primary">최대 5개</span>
-            </div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {companies.map((company) => (
-                <Chip
-                  key={company}
-                  label={company}
-                  active={selectedCompanies.includes(company)}
-                  onClick={() => toggleCompany(company)}
-                />
-              ))}
-            </div>
+          <div className="space-y-4">
+            <h1 className="text-[48px] font-black leading-[1.13] tracking-[-0.03em] text-[#111b39]">
+              지금 바로
+              <br />
+              <span className="text-primary">시작합니다</span>
+            </h1>
+            <p className="text-[19px] font-medium leading-[1.45] text-[#4f628f]">
+              더 스마트하고 편리한 일상의 변화,
+              <br />
+              우리가 함께 만들어갑니다.
+            </p>
           </div>
 
-          <div>
-            <p className="text-[11px] font-bold text-muted">관심 직무 (필수)</p>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {roleOptions.map((role) => (
-                <Chip key={role} label={role} active={selectedRole === role} onClick={() => setSelectedRole(role)} />
-              ))}
-            </div>
+          <div className="flex gap-2">
+            <span className="h-1.5 w-8 rounded-full bg-primary" />
+            <span className="h-1.5 w-2 rounded-full bg-[#d6dcf0]" />
+            <span className="h-1.5 w-2 rounded-full bg-[#d6dcf0]" />
           </div>
 
-          <div>
-            <p className="text-[11px] font-bold text-muted">관심 키워드</p>
-            <input
-              value={keywords}
-              onChange={(event) => setKeywords(event.target.value)}
-              placeholder="예: AI, 클라우드, 아키텍처"
-              className="mt-2 w-full rounded-2xl border border-line px-4 py-3 text-[13px] font-semibold text-text"
-            />
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={() => router.push("/onboarding/preferences")}
+              className="flex h-16 w-full items-center justify-center gap-2 rounded-2xl bg-[#111a37] text-[28px] font-black text-white shadow-[0_16px_26px_rgba(17,26,55,0.24)]"
+            >
+              시작하기
+              <ChevronRight size={20} />
+            </button>
+            <button type="button" className="h-16 w-full rounded-2xl border border-[#e1e7fb] bg-white/80 text-[28px] font-black text-[#131f41]">
+              로그인
+            </button>
           </div>
+        </div>
 
-          <div>
-            <p className="text-[11px] font-bold text-muted">알림 시간</p>
-            <input
-              type="time"
-              value={pushTime}
-              onChange={(event) => setPushTime(event.target.value)}
-              className="mt-2 w-full rounded-2xl border border-line px-4 py-3 text-[13px] font-semibold text-text"
-            />
-          </div>
-
-          {error ? <p className="text-[11px] font-bold text-red-500">{error}</p> : null}
-
-          <button
-            type="button"
-            onClick={handleSubmit}
-            disabled={!selectedRole}
-            className="w-full rounded-2xl bg-navy py-4 text-[21px] font-black text-white disabled:opacity-45"
-          >
-            설정 완료
-          </button>
-        </section>
+        <p className="mt-3 text-center text-[13px] font-medium text-[#9aa8c8]">
+          계속 진행함으로써 <span className="underline">이용약관</span> 및 <span className="underline">개인정보처리방침</span>에 동의하게 됩니다.
+        </p>
       </div>
     </AppShell>
   );
