@@ -32,11 +32,11 @@ export default function DetailPage() {
 
   return (
     <AppShell className="page-enter" padded={false}>
-      <div className="mx-auto w-full max-w-[430px] pb-28">
+      <div className="mx-auto w-full max-w-[430px] pb-10">
         <header className="sticky top-0 z-30 flex items-center justify-between border-b border-line bg-white/95 px-4 py-3">
           <div className="flex items-center gap-3">
             <button type="button" onClick={() => router.back()} className="rounded-full p-2 text-text"><ChevronLeft /></button>
-            <h1 className="text-[30px] font-black text-text">이슈 상세</h1>
+            <h1 className="text-[22px] font-black text-text">이슈 상세</h1>
           </div>
           <div className="flex items-center gap-1">
             <button type="button" onClick={() => toggleScrap(insight.id)} className="rounded-full p-2 text-[#52658f]"><Bookmark size={20} fill={isScrapped ? "currentColor" : "none"} /></button>
@@ -50,7 +50,7 @@ export default function DetailPage() {
               <span className="rounded bg-primary-soft px-2 py-1 text-[10px] font-bold text-primary">{insight.badge || "TECH TREND"}</span>
               <span className="text-[11px] font-medium text-muted">{insight.date}</span>
             </div>
-            <h2 className="mb-5 text-[44px] font-black leading-[1.18] tracking-[-0.03em] text-text">{insight.title}</h2>
+            <h2 className="mb-5 text-[31px] font-black leading-[1.25] tracking-[-0.02em] text-text">{insight.title}</h2>
             <div className="overflow-hidden rounded-3xl">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={insight.coverImageUrl ?? imageFallback} alt={insight.title} className="h-52 w-full object-cover" onError={(event) => { event.currentTarget.src = imageFallback; }} />
@@ -60,14 +60,14 @@ export default function DetailPage() {
           <section className="mb-8">
             <div className="mb-3 flex items-center gap-2">
               <div className="h-5 w-1 rounded-full bg-primary" />
-              <h3 className="text-[34px] font-black text-text">핵심 요약</h3>
+              <h3 className="text-[23px] font-black text-text">핵심 요약</h3>
             </div>
             <div className="rounded-2xl border border-line bg-[#f8faff] p-4">
               <ul className="space-y-3">
                 {insight.summaryBullets.map((bullet, index) => (
                   <li key={bullet} className="flex gap-2.5">
                     <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">{index + 1}</span>
-                    <p className="text-[14px] font-medium leading-relaxed text-[#374a75]">{bullet}</p>
+                    <p className="text-[13px] font-medium leading-relaxed text-[#374a75]">{bullet}</p>
                   </li>
                 ))}
               </ul>
@@ -90,36 +90,36 @@ export default function DetailPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="h-5 w-1 rounded-full bg-primary" />
-                <h3 className="text-[34px] font-black text-text">면접 대비 질문</h3>
+                <h3 className="text-[23px] font-black text-text">면접 대비 질문</h3>
               </div>
               <span className="rounded bg-primary-soft px-2 py-1 text-[11px] font-bold text-primary">2 Questions</span>
             </div>
 
             <article className="rounded-3xl border border-line bg-white p-5 shadow-[var(--shadow-card)]">
               <div className="mb-4 flex items-start gap-2">
-                <p className="text-[30px] font-black text-primary">Q1.</p>
-                <p className="text-[18px] font-black leading-snug text-text">{qa.question}</p>
+                <p className="text-[23px] font-black text-primary">Q1.</p>
+                <p className="text-[16px] font-black leading-snug text-text">{qa.question}</p>
               </div>
               <div className="rounded-2xl border border-line bg-[#f5f8ff] p-4">
                 <p className="text-[11px] font-bold uppercase text-primary">Ideal Answer Guide</p>
-                <p className="mt-2 text-[13px] font-medium leading-relaxed text-[#3c4f7a]">{qa.answerTip}</p>
+                <p className="mt-2 text-[12px] font-medium leading-relaxed text-[#3c4f7a]">{qa.answerTip}</p>
               </div>
             </article>
 
             <article className="rounded-3xl border border-line bg-white p-5 shadow-[var(--shadow-card)]">
               <div className="mb-4 flex items-start gap-2">
-                <p className="text-[30px] font-black text-primary">Q2.</p>
-                <p className="text-[18px] font-black leading-snug text-text">{insight.secondaryQuestion}</p>
+                <p className="text-[23px] font-black text-primary">Q2.</p>
+                <p className="text-[16px] font-black leading-snug text-text">{insight.secondaryQuestion}</p>
               </div>
               <div className="rounded-2xl border border-line bg-[#f5f8ff] p-4">
                 <p className="text-[11px] font-bold uppercase text-primary">Ideal Answer Guide</p>
-                <p className="mt-2 text-[13px] font-medium leading-relaxed text-[#3c4f7a]">{insight.secondaryAnswerTip}</p>
+                <p className="mt-2 text-[12px] font-medium leading-relaxed text-[#3c4f7a]">{insight.secondaryAnswerTip}</p>
               </div>
             </article>
           </section>
 
           <section>
-            <h3 className="mb-3 text-[31px] font-black text-text">관련 이슈 더보기</h3>
+            <h3 className="mb-3 text-[23px] font-black text-text">관련 이슈 더보기</h3>
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
               {related.map((item) => (
                 <button key={item.id} type="button" onClick={() => router.push(`/detail/${item.id}`)} className="min-w-[250px] rounded-2xl border border-line bg-white p-3 text-left">
@@ -130,13 +130,6 @@ export default function DetailPage() {
             </div>
           </section>
         </main>
-
-        <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-[430px] items-center gap-3 border-t border-line bg-white/95 px-5 py-4">
-          <button type="button" onClick={() => toggleScrap(insight.id)} className="grid h-12 w-12 place-items-center rounded-xl border border-line text-[#66779d]">
-            <Bookmark size={20} fill={isScrapped ? "currentColor" : "none"} />
-          </button>
-          <button type="button" className="h-12 flex-1 rounded-xl bg-primary text-[19px] font-black text-white">이 이슈로 모의 면접 시작하기</button>
-        </nav>
       </div>
     </AppShell>
   );

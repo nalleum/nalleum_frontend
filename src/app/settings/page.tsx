@@ -72,28 +72,32 @@ export default function SettingsPage() {
       return;
     }
 
-    const result = await sendMockSystemNotification({
-      title: `[${primaryInsight.companyName}] 이슈 업데이트`,
-      body: `${primaryInsight.title} (탭해서 상세 보기)`,
-      url: `/detail/${primaryInsight.id}`,
-      icon: "/main_icon.png",
-    });
+    setStatus("10초 후 테스트 푸시를 보냅니다.");
 
-    if (result.permission !== "unsupported") setPushPermission(result.permission);
+    window.setTimeout(async () => {
+      const result = await sendMockSystemNotification({
+        title: `[${primaryInsight.companyName}] 이슈 업데이트`,
+        body: `${primaryInsight.title} (탭해서 상세 보기)`,
+        url: `/detail/${primaryInsight.id}`,
+        icon: "/main_icon.png",
+      });
 
-    if (!result.ok) {
-      setStatus(result.message ?? "테스트 알림 전송 실패");
-      return;
-    }
+      if (result.permission !== "unsupported") setPushPermission(result.permission);
 
-    addPushHistory({
-      title: `[${primaryInsight.companyName}] 이슈 업데이트`,
-      body: `${primaryInsight.title} (탭해서 상세 보기)`,
-      insightId: primaryInsight.id,
-      category: "면접 브리핑",
-    });
+      if (!result.ok) {
+        setStatus(result.message ?? "테스트 알림 전송 실패");
+        return;
+      }
 
-    setStatus("테스트 알림을 전송했습니다.");
+      addPushHistory({
+        title: `[${primaryInsight.companyName}] 이슈 업데이트`,
+        body: `${primaryInsight.title} (탭해서 상세 보기)`,
+        insightId: primaryInsight.id,
+        category: "면접 브리핑",
+      });
+
+      setStatus("테스트 알림을 전송했습니다.");
+    }, 10000);
   };
 
   return (

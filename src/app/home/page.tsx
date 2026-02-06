@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Bell, Flame, Menu, MessageCircleMore } from "lucide-react";
+import { Bell, Flame, Menu } from "lucide-react";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import AppShell from "@/components/AppShell";
@@ -103,13 +103,6 @@ export default function HomePage() {
           ) : null}
         </section>
       </main>
-
-      <div className="fixed bottom-16 left-1/2 z-40 -translate-x-1/2">
-        <button type="button" className="grid h-14 w-14 place-items-center rounded-2xl bg-primary text-white shadow-[0_12px_24px_rgba(79,45,255,0.25)]">
-          <MessageCircleMore size={24} />
-        </button>
-      </div>
-
       <BottomNav />
     </AppShell>
   );

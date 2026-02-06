@@ -12,7 +12,7 @@ export default function BottomNav() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-white/95 backdrop-blur">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-line bg-white/95 shadow-[0_-6px_18px_rgba(18,29,61,0.08)] backdrop-blur">
       <div className="mx-auto flex w-full max-w-[430px] items-center justify-around px-5 pb-[calc(0.65rem+env(safe-area-inset-bottom))] pt-2.5">
         <Link href="/home" className={`${itemBase} ${isActive("/home") ? "text-primary" : "text-muted"}`}>
           <House size={18} strokeWidth={2.2} />
