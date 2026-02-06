@@ -5,6 +5,8 @@ export type UserProfile = {
   targetCompanies: string[];
   targetRole: Role;
   targetIndustries: string[];
+  major?: string;
+  certifications?: string;
   interestKeywords: string[];
   pushTime: string;
   pushEnabled: boolean;

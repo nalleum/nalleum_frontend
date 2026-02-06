@@ -58,7 +58,7 @@ export const insightCards: InsightCard[] = [
       '패키징 라인 확장과 수율 안정화 전략이 핵심 과제로 부상했습니다.',
       '면접에서는 기술 격차와 공정 효율화 관점으로 답변을 구성하는 것이 유리합니다.',
     ],
-    originalLink: 'https://news.samsung.com',
+    originalLink: 'https://www.koreareport.co.kr/news/articleView.html?idxno=42963',
     date: '2025.05.19',
     roleSpecificContent: roleBase,
     secondaryQuestion: '대규모 생산 전환 시 공급망 리스크를 어떻게 관리하시겠습니까?',

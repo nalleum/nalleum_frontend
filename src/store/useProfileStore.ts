@@ -10,6 +10,8 @@ const defaultProfile: UserProfile = {
   targetCompanies: ["삼성전자", "네이버", "카카오"],
   targetRole: "Backend",
   targetIndustries: ["금융/핀테크"],
+  major: "금융/핀테크",
+  certifications: "",
   interestKeywords: ["AI", "클라우드"],
   pushTime: "09:00",
   pushEnabled: true,
@@ -23,6 +25,8 @@ type CompleteOnboardingInput = {
   targetCompanies: string[];
   targetRole: Role;
   targetIndustries: string[];
+  major?: string;
+  certifications?: string;
   interestKeywords: string[];
   pushTime: string;
   pushEnabled: boolean;
@@ -53,10 +57,13 @@ export const useProfileStore = create<ProfileState>()(
       pushPermission: "default",
       pushHistory: mockPushHistorySeed,
       completeOnboarding: (input) =>
+        // Keep required API payload values available even if dedicated UI fields are missing.
         set({
           profile: {
             ...get().profile,
             ...input,
+            major: input.major ?? (input.targetIndustries.length ? input.targetIndustries.join(", ") : "미지정"),
+            certifications: input.certifications ?? "",
             onboardingCompleted: true,
           },
           pushEnabled: input.pushEnabled,

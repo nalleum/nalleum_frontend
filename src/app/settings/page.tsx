@@ -20,6 +20,7 @@ import BottomNav from '@/components/BottomNav';
 import ProfileAvatar from '@/components/ProfileAvatar';
 import { mockSchedules } from '@/data/mockSchedules';
 import { useHydratedStore } from '@/hooks/useHydratedStore';
+import { fetchInterviewQuestions } from '@/lib/interviewApi';
 import { requestNotificationPermission, sendMockSystemNotification } from '@/lib/mockSystemPush';
 import { useInsightStore } from '@/store/useInsightStore';
 import { useProfileStore } from '@/store/useProfileStore';
@@ -69,12 +70,30 @@ export default function SettingsPage() {
       return;
     }
 
-    setStatus('10초 후 테스트 푸시를 보냅니다.');
+    let pushBody = primaryInsight.secondaryQuestion;
+    const today = new Date();
+    const formatDate = `${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getDate()).padStart(2, '0')}`;
+
+    try {
+      const questions = await fetchInterviewQuestions({
+        name: profile.nickname || '사용자',
+        company: primaryInsight.companyName,
+        role: profile.targetRole,
+        major: profile.major || (profile.targetIndustries.length ? profile.targetIndustries.join(', ') : '미지정'),
+        certifications: profile.certifications ?? '',
+      });
+      if (questions[0]) {
+        pushBody = questions[0];
+      }
+      setStatus('10초 후 테스트 푸시를 보냅니다.');
+    } catch {
+      setStatus('API 실패로 기본 질문을 사용합니다. 10초 후 테스트 푸시를 보냅니다.');
+    }
 
     window.setTimeout(async () => {
       const result = await sendMockSystemNotification({
-        title: `[${primaryInsight.companyName}] 면접 대비 질문`,
-        body: `${primaryInsight.secondaryQuestion}`,
+        title: `[${formatDate} ${primaryInsight.companyName}] 면접 대비 질문`,
+        body: pushBody,
         url: `/detail/${primaryInsight.id}`,
         icon: '/main_icon.png',
       });
@@ -87,8 +106,8 @@ export default function SettingsPage() {
       }
 
       addPushHistory({
-        title: `[${primaryInsight.companyName}] 면접 대비 질문`,
-        body: `${primaryInsight.secondaryQuestion}`,
+        title: `[${formatDate} ${primaryInsight.companyName}] 면접 대비 질문`,
+        body: pushBody,
         insightId: primaryInsight.id,
         category: '면접 브리핑',
       });
