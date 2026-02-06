@@ -27,7 +27,7 @@ export const insightCards: InsightCard[] = [
   {
     id: 'naver-ai-backend',
     companyName: '네이버',
-    companyIconUrl: './naver_icon.png',
+    companyIconUrl: './naver_icon.jpeg',
     title: '생성형 AI 도입 가속화에 따른 백엔드 아키텍처의 변화와 대응',
     summary: 'AI 기능 확산으로 실시간 추론, 벡터 검색, 서비스 분리가 핵심 아키텍처 이슈로 부상했습니다.',
     summaryBullets: [
