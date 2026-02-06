@@ -11,6 +11,28 @@ export type MockPushResult = {
   message?: string;
 };
 
+function isStandalonePwa() {
+  if (typeof window === "undefined") return false;
+  const nav = window.navigator as Navigator & { standalone?: boolean };
+  return window.matchMedia?.("(display-mode: standalone)")?.matches || nav.standalone === true;
+}
+
+async function getServiceWorkerRegistration() {
+  if (!("serviceWorker" in navigator)) return null;
+
+  try {
+    await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+  } catch {
+    // Keep going and try existing registration.
+  }
+
+  try {
+    return await navigator.serviceWorker.ready;
+  } catch {
+    return null;
+  }
+}
+
 export async function requestNotificationPermission(): Promise<NotificationPermission | "unsupported"> {
   if (typeof window === "undefined" || !("Notification" in window)) return "unsupported";
   if (Notification.permission === "granted") return "granted";
@@ -34,9 +56,9 @@ export async function sendMockSystemNotification(payload: MockPushPayload): Prom
   const icon = payload.icon ?? "/main_icon.png";
   const data = { url: payload.url };
 
-  if ("serviceWorker" in navigator) {
+  const registration = await getServiceWorkerRegistration();
+  if (registration) {
     try {
-      const registration = await navigator.serviceWorker.ready;
       await registration.showNotification(payload.title, {
         body: payload.body,
         icon,
@@ -50,16 +72,26 @@ export async function sendMockSystemNotification(payload: MockPushPayload): Prom
     }
   }
 
-  const notification = new Notification(payload.title, {
-    body: payload.body,
-    icon,
-    data,
-  });
+  try {
+    const notification = new Notification(payload.title, {
+      body: payload.body,
+      icon,
+      data,
+    });
 
-  notification.onclick = () => {
-    window.focus();
-    window.location.href = payload.url;
-  };
+    notification.onclick = () => {
+      window.focus();
+      window.location.href = payload.url;
+    };
+  } catch {
+    return {
+      ok: false,
+      permission,
+      message: isStandalonePwa()
+        ? "현재 기기에서 알림 표시가 제한되어 있습니다. 브라우저 알림 설정을 확인해 주세요."
+        : "모바일에서는 홈 화면에 설치한 PWA에서 알림이 동작할 수 있습니다.",
+    };
+  }
 
   return { ok: true, permission };
 }

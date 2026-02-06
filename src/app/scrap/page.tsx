@@ -26,7 +26,7 @@ export default function ScrapPage() {
     <AppShell className="page-enter" padded={false}>
       <div className="mx-auto min-h-screen w-full max-w-[430px] pb-24">
         <header className="sticky top-0 z-30 flex items-center justify-between border-b border-line bg-white/95 px-5 py-4">
-          <h1 className="text-[35px] font-black text-text">스크랩</h1>
+          <h1 className="text-[28px] font-black text-text">스크랩</h1>
           <div className="flex items-center gap-1 text-[#586995]">
             <button type="button" className="rounded-full p-2"><Search size={20} /></button>
             <button type="button" onClick={() => router.push("/settings")} className="rounded-full p-2"><Settings size={20} /></button>
@@ -40,7 +40,7 @@ export default function ScrapPage() {
                 key={company}
                 type="button"
                 onClick={() => setCompanyFilter(company)}
-                className={`rounded-full px-4 py-1.5 text-[13px] font-bold whitespace-nowrap ${companyFilter === company ? "bg-primary text-white" : "bg-[#f0f3fa] text-[#61739c]"}`}
+                className={`rounded-full px-3.5 py-1.5 text-[12px] font-bold whitespace-nowrap ${companyFilter === company ? "bg-primary text-white" : "bg-[#f0f3fa] text-[#61739c]"}`}
               >
                 {company}
               </button>
@@ -51,15 +51,15 @@ export default function ScrapPage() {
         <main className="px-5 py-6">
           <section className="mb-8">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-[31px] font-black text-text">면접 전 필수 브리핑</h2>
-              <span className="text-[12px] font-semibold text-muted">전체보기</span>
+              <h2 className="text-[23px] font-black text-text">면접 전 필수 브리핑</h2>
+              <span className="text-[11px] font-semibold text-muted">전체보기</span>
             </div>
             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
               {mockScrapBriefings.map((brief) => (
-                <article key={brief.id} className={`min-w-[280px] rounded-3xl p-5 text-white ${brief.tone === "indigo" ? "bg-gradient-to-br from-[#5c37ff] to-[#632df8]" : "bg-gradient-to-br from-[#1f273b] to-[#0f1526]"}`}>
+                <article key={brief.id} className={`min-w-[260px] rounded-3xl p-4 text-white ${brief.tone === "indigo" ? "bg-gradient-to-br from-[#5c37ff] to-[#632df8]" : "bg-gradient-to-br from-[#1f273b] to-[#0f1526]"}`}>
                   <span className="rounded bg-white/20 px-2 py-1 text-[10px] font-bold">{brief.label}</span>
-                  <p className="mt-4 whitespace-pre-line text-[31px] font-black leading-[1.24]">{brief.title}</p>
-                  <p className="mt-4 flex items-center gap-2 text-[12px] font-semibold"><FileText size={14} />{brief.itemCountText}</p>
+                  <p className="mt-4 whitespace-pre-line text-[21px] font-black leading-[1.25]">{brief.title}</p>
+                  <p className="mt-4 flex items-center gap-2 text-[11px] font-semibold"><FileText size={14} />{brief.itemCountText}</p>
                 </article>
               ))}
             </div>
@@ -67,8 +67,8 @@ export default function ScrapPage() {
 
           <section>
             <div className="mb-3 flex items-center justify-between">
-              <h2 className="text-[31px] font-black text-text">저장한 이슈 <span className="text-primary">{filtered.length}</span></h2>
-              <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-muted">최신순 <ChevronDown size={14} /></span>
+              <h2 className="text-[23px] font-black text-text">저장한 이슈 <span className="text-primary">{filtered.length}</span></h2>
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-muted">최신순 <ChevronDown size={14} /></span>
             </div>
             <div className="space-y-3">
               {filtered.map((item) => (
@@ -80,13 +80,13 @@ export default function ScrapPage() {
                   </div>
                     <div className="flex-1">
                       <div className="mb-1 flex items-center justify-between">
-                        <span className="text-[10px] font-bold text-primary uppercase">{item.badge}</span>
+                        <span className="text-[9px] font-bold text-primary uppercase">{item.badge}</span>
                         <button type="button" onClick={() => toggleScrap(item.id)} className="text-primary"><Bookmark size={16} fill="currentColor" /></button>
                       </div>
                       <button type="button" onClick={() => router.push(`/detail/${item.id}`)} className="text-left">
-                        <p className="text-[15px] font-black leading-snug text-text">{item.title}</p>
+                        <p className="text-[14px] font-black leading-snug text-text">{item.title}</p>
                       </button>
-                      <p className="mt-1 text-[11px] font-medium text-muted">{item.date} · {item.companyName}</p>
+                      <p className="mt-1 text-[10px] font-medium text-muted">{item.date} · {item.companyName}</p>
                     </div>
                   </div>
                 </article>
