@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f6f8ff;
+  --card: #ffffff;
+  --text: #0e1a3a;
+  --muted: #8fa0bf;
+  --line: #e7ecfb;
+  --primary: #4f2dff;
+  --primary-soft: #f0ebff;
+  --navy: #0f1738;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-card: var(--card);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-navy: var(--navy);
+  --shadow-card: 0 10px 24px rgba(38, 61, 136, 0.08);
+  --font-sans: var(--font-noto);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: radial-gradient(circle at 15% 8%, #eef2ff 0%, #f6f8ff 44%, #ffffff 100%);
+  color: var(--text);
+  font-family: var(--font-noto), ui-sans-serif, system-ui;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.page-enter {
+  animation: pageEnter 0.5s ease both;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
