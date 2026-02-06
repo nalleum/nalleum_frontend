@@ -83,7 +83,11 @@ export default function HomePage() {
         <section>
           <h3 className="mb-3 text-[22px] font-black text-text">관심 기업 최신 동향</h3>
           {hero ? (
-            <article className="rounded-3xl border border-line bg-white p-4 shadow-[var(--shadow-card)]">
+            <button
+              type="button"
+              onClick={() => router.push(`/detail/${hero.id}`)}
+              className="w-full rounded-3xl border border-line bg-white p-4 text-left shadow-[var(--shadow-card)]"
+            >
               <div className="mb-3 flex items-center gap-2">
                 <Image src={hero.companyIconUrl} alt={hero.companyName} width={20} height={20} className="h-5 w-5 rounded bg-white p-[2px]" />
                 <p className="text-[14px] font-bold text-text">{hero.companyName}</p>
@@ -96,10 +100,10 @@ export default function HomePage() {
                 <p className="mb-1 text-[12px] font-bold text-primary">AI 요약</p>
                 <p className="text-[14px] font-medium leading-relaxed text-[#44557f]">{hero.summary}</p>
               </div>
-              <button type="button" onClick={() => router.push(`/detail/${hero.id}`)} className="mt-4 w-full border-t border-line pt-3 text-[16px] font-black text-primary">
+              <p className="mt-4 w-full border-t border-line pt-3 text-center text-[16px] font-black text-primary">
                 관련 예상 질문 확인하기
-              </button>
-            </article>
+              </p>
+            </button>
           ) : null}
         </section>
       </main>

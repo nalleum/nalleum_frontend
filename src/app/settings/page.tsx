@@ -13,12 +13,15 @@ import {
   Sparkles,
   Trash2,
 } from "lucide-react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppShell from "@/components/AppShell";
 import BottomNav from "@/components/BottomNav";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { mockSchedules } from "@/data/mockSchedules";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
+import { requestNotificationPermission, sendMockSystemNotification } from "@/lib/mockSystemPush";
+import { useInsightStore } from "@/store/useInsightStore";
 import { useProfileStore } from "@/store/useProfileStore";
 
 export default function SettingsPage() {
@@ -26,10 +29,73 @@ export default function SettingsPage() {
   const hydrated = useHydratedStore();
   const profile = useProfileStore((state) => state.profile);
   const pushEnabled = useProfileStore((state) => state.pushEnabled);
+  const setPushPermission = useProfileStore((state) => state.setPushPermission);
+  const addPushHistory = useProfileStore((state) => state.addPushHistory);
   const togglePush = useProfileStore((state) => state.togglePush);
   const setPushTime = useProfileStore((state) => state.setPushTime);
+  const insights = useInsightStore((state) => state.insights);
+  const [status, setStatus] = useState("");
+
+  const primaryInsight = useMemo(
+    () => insights.find((item) => profile.targetCompanies.includes(item.companyName)) ?? insights[0],
+    [insights, profile.targetCompanies]
+  );
 
   if (!hydrated) return <div className="min-h-screen bg-background" />;
+
+  const handlePushToggle = async () => {
+    if (pushEnabled) {
+      togglePush(false);
+      setStatus("푸시 알림을 껐습니다.");
+      return;
+    }
+
+    const permission = await requestNotificationPermission();
+    if (permission !== "unsupported") setPushPermission(permission);
+
+    if (permission === "granted") {
+      togglePush(true);
+      setStatus("푸시 알림이 활성화되었습니다.");
+    } else {
+      togglePush(false);
+      setStatus(permission === "unsupported" ? "이 브라우저는 알림을 지원하지 않습니다." : "알림 권한이 필요합니다.");
+    }
+  };
+
+  const handleSendTestPush = async () => {
+    if (!primaryInsight) return;
+    if (!pushEnabled) {
+      setStatus("푸시 토글을 먼저 켜주세요.");
+      return;
+    }
+
+    setStatus("10초 후 테스트 푸시를 보냅니다.");
+
+    window.setTimeout(async () => {
+      const result = await sendMockSystemNotification({
+        title: `[${primaryInsight.companyName}] 이슈 업데이트`,
+        body: `${primaryInsight.title} (탭해서 상세 보기)`,
+        url: `/detail/${primaryInsight.id}`,
+        icon: "/main_icon.png",
+      });
+
+      if (result.permission !== "unsupported") setPushPermission(result.permission);
+
+      if (!result.ok) {
+        setStatus(result.message ?? "테스트 알림 전송 실패");
+        return;
+      }
+
+      addPushHistory({
+        title: `[${primaryInsight.companyName}] 이슈 업데이트`,
+        body: `${primaryInsight.title} (탭해서 상세 보기)`,
+        insightId: primaryInsight.id,
+        category: "면접 브리핑",
+      });
+
+      setStatus("테스트 알림을 전송했습니다.");
+    }, 10000);
+  };
 
   return (
     <AppShell className="page-enter" padded={false}>
@@ -158,7 +224,7 @@ export default function SettingsPage() {
               <h3 className="text-[15px] font-bold text-[#0f1738]">푸시 알림 시간 설정</h3>
               <button
                 type="button"
-                onClick={() => togglePush()}
+                onClick={handlePushToggle}
                 className={`relative h-5 w-10 rounded-full transition ${pushEnabled ? "bg-primary" : "bg-[#dfe6f7]"}`}
               >
                 <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition ${pushEnabled ? "right-0.5" : "left-0.5"}`} />
@@ -185,6 +251,14 @@ export default function SettingsPage() {
                 <Info size={14} className="mt-0.5" />설정한 시간 외에는 긴급 공지사항을 제외한 모든 푸시 알림이 발송되지 않습니다.
               </p>
             </div>
+            <button
+              type="button"
+              onClick={handleSendTestPush}
+              className="mt-3 w-full rounded-xl bg-primary py-3 text-[14px] font-bold text-white shadow-[0_10px_18px_rgba(79,45,255,0.2)]"
+            >
+              데모 테스트 푸시 보내기
+            </button>
+            {status ? <p className="mt-2 text-[12px] font-semibold text-primary">{status}</p> : null}
           </section>
 
           <section className="border-b border-[#edf1fb] bg-white px-5 py-6">
